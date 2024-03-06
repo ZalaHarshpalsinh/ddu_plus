@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-
+from . import helpers
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,8 +26,9 @@ SECRET_KEY = 'django-insecure-t$njv-rk2z)35t68#7s=w%h+25^!f$w@199o-%(7ids_xnkgv2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
+LOCAL_IP = helpers.get_IP()
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', LOCAL_IP]
+helpers.print_IP(LOCAL_IP)
 
 # Application definition
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap5',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +124,7 @@ STATICFILES_DIRS = [
     'static',
 ]
 STATIC_ROOT = os.path.join(BASE_DIR , 'staticfiles_build', 'static')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

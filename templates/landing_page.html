@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    DDU+
+{% endblock%}
+
+{% block body %}
+
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Student</h5>
+                    <a href="{% url 'authentication:studentRegister' %}" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Employee</h5>
+                    <a href="{% url 'authentication:employeeRegister' %}" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-12">
+            <a href="{% url 'authentication:login' %}" class="btn w-100 btn-primary">Login</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

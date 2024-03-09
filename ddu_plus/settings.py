@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from django.forms.renderers import TemplatesSetting
 from pathlib import Path
 import os
 from . import helpers
@@ -33,6 +33,7 @@ helpers.print_IP(LOCAL_IP)
 # Application definition
 
 INSTALLED_APPS = [
+    "django.forms",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -103,6 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'authentication.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -125,8 +127,17 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR , 'staticfiles_build', 'static')
 
+# managing media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#custom form template
+class CustomFormRenderer(TemplatesSetting):
+    form_template_name = "components/form_snippet.html"
+
+FORM_RENDERER = "ddu_plus.settings.CustomFormRenderer"

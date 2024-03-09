@@ -1,0 +1,23 @@
+{% extends 'profiles/profile.html' %}
+
+{% block title %}
+Department | {{ department.name }}
+{% endblock %}
+
+{% block profileImage %}
+<img src="{{ department.profilePhoto.url }}" alt="Profile Photo" class="profile-photo my-4">
+{% endblock %}
+
+{% block imageInfo %}
+<h1>{{ department.name }}</h1>
+{% endblock %}
+
+{% block profileInfo %}
+<h2>Department Information</h2>
+<div class="row my-4 g-4">
+    <div class="form-group col-12">
+        <label for="about">About : </label>
+        <div class="form-control" id="about"> {{ department.about }} </div>
+    </div>
+</div>
+{% endblock %}

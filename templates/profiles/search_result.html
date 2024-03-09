@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title }
+Search
+{% endblock }
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>Users :</h2>
+            <ul class="list-group list-group-flush">
+                {% for user in users %}
+                    <a href="{% url 'profiles:userProfile' user.id %}" class="list-group-item">
+                            <img src="{{ user.person.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
+                            <span>{{ user.username }}</span>
+                    </a>
+                {% empty %}
+                    <p class="text-danger">No users found<p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

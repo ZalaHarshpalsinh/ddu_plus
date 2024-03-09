@@ -11,12 +11,21 @@
     <title>
         {% block title %} {% endblock %}
     </title>
+    <style>
+        .profile-icon
+        {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
     {% block style %} {% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand nav-link" href="#">
+            <a class="navbar-brand nav-link" href="{% url 'landingPage' %}">
                 <img src="{% static 'images/logo.png' %}" alt="Logo" height="50">
             </a>
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -24,21 +33,33 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav">
+                    {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="" class="nav-link active">Home</a>
+                        <a href="#" class="nav-link active">Home</a>
+                    </li>
+                    <form action="{% url 'profiles:search' %}" class="d-flex" method="POST">
+                        {% csrf_token %}
+                        <input class="form-control me-2" type="search" placeholder="Search Users" name="searchKey">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'profiles:userProfile' user.id %}" class="nav-link active">
+                            <img src="{{ user.person.profilePhoto.url }}" alt="Profile" class="profile-icon">
+                            {{ user.username }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link">About</a>
+                        <a href="{% url 'authentication:logout' %}" class="nav-link"> Logout </a>
                     </li>
+                    {% else %}
                     <li class="nav-item">
-                        <a href="" class="nav-link">Contact</a>
+                        <a href="{% url 'authentication:login' %}" class="nav-link"> Login </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">Logout</a>
-                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

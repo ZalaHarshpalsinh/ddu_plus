@@ -11,7 +11,7 @@ Student | Register
             <div class="card my-4 p-4 shadow rounded">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Register Student</h2>
-                    <form method="POST" class="container needs-validation">
+                    <form method="POST" class="container needs-validation"  enctype="multipart/form-data">
                         <div class="row row-cols-1 row-cols-md-2">
                             {% csrf_token %}    
                             {{ userForm }}

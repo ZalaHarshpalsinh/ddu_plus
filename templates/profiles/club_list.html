@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title }
+Clubs
+{% endblock }
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>Clubs :</h2>
+            <ul class="list-group list-group-flush">
+                {% for club in clubs %}
+                    <a href="{% url 'profiles:clubProfile' club.id %}" class="list-group-item">
+                            <img src="{{ club.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
+                            <span>{{ club.name }}</span>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

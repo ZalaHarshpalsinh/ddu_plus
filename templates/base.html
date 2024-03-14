@@ -37,7 +37,17 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link active">Home</a>
                     </li>
-                    <form action="{% url 'profiles:search' %}" class="d-flex" method="POST">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">
+                          Explore
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{% url 'profiles:departments' %}">Departments</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{% url 'profiles:clubs' %}">Clubs</a></li>
+                        </ul>
+                      </li>
+                    <form action="{% url 'profiles:users' %}" class="d-flex" method="POST">
                         {% csrf_token %}
                         <input class="form-control me-2" type="search" placeholder="Search Users" name="searchKey">
                         <button class="btn btn-outline-success" type="submit">Search</button>

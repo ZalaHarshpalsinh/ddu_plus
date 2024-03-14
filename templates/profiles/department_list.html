@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title }
+Departments
+{% endblock }
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>Departments :</h2>
+            <ul class="list-group list-group-flush">
+                {% for department in departments %}
+                    <a href="{% url 'profiles:departmentProfile' department.id %}" class="list-group-item">
+                            <img src="{{ department.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
+                            <span>{{ department.name }}</span>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -18,6 +18,14 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
+class Club(models.Model):
+    profilePhoto = models.ImageField(upload_to='profile_photos/Clubs')
+    name = models.CharField(max_length=100)
+    about = models.TextField(max_length=5000)
+
+    def __str__(self):
+        return self.name
+
 class Person(models.Model):
     profilePhoto = models.ImageField(upload_to='profile_photos/People')
     department = models.ForeignKey(Department,on_delete=models.CASCADE)

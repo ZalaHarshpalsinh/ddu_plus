@@ -1,14 +1,9 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import AbstractUser
+from events.models import *
 
-# Create your models here.
-class User(AbstractUser):
-    class userTypes(models.TextChoices):
-        STUDENT  = 'STUDENT', 'student'
-        EMPLOYEE = 'EMPLOYEE', 'employee'
     
-    type = models.CharField(max_length=8, choices=userTypes.choices, default=userTypes.STUDENT)
+# Create your models here.
 
 class Department(models.Model):
     profilePhoto = models.ImageField(upload_to='profile_photos/Departments')
@@ -18,13 +13,11 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
-class Club(models.Model):
-    profilePhoto = models.ImageField(upload_to='profile_photos/Clubs')
-    name = models.CharField(max_length=100)
-    about = models.TextField(max_length=5000)
-
-    def __str__(self):
-        return self.name
+class User(AbstractUser):
+    class userTypes(models.TextChoices):
+        STUDENT  = 'STUDENT', 'student'
+        EMPLOYEE = 'EMPLOYEE', 'employee'
+    type = models.CharField(max_length=8, choices=userTypes.choices, default=userTypes.STUDENT)
 
 class Person(models.Model):
     profilePhoto = models.ImageField(upload_to='profile_photos/People')
@@ -36,16 +29,8 @@ class Person(models.Model):
 
 
 class Student(models.Model):
-    semesters = (
-        ('1','1'),
-        ('2','2'),
-        ('3','3'), 
-        ('4','4'), 
-        ('5','5'), 
-        ('6','6'), 
-        ('7','7'), 
-        ('8','8'),
-        )
+    semesters = [('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8')]
+
     semester = models.CharField(max_length=1, choices=semesters)
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
 
@@ -55,10 +40,10 @@ class Student(models.Model):
 
 class Employee(models.Model):
     designation = models.CharField(max_length=50)
-    person = models.OneToOneField(Person, on_delete=models.CASCADE)
-
+    account = models.OneToOneField(User, on_delete=models.CASCADE)
+    
     def __str__(self):
-        return self.person.account.username
+        return self.account.username
 
 
 

@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Chat
+{% endblock %}
+
+{% block style %}
+<style>
+.chat-message-container {
+    padding: 10px;
+    padding-right: 50px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    width: fit-content;
+    max-width: 70%;
+}
+
+.outgoing-chat-message-container {
+    background-color: #dcf8c6;
+    margin-left: auto;
+}
+
+.incoming-chat-message-container {
+    background-color: #e0e0e0;
+    margin-right: auto;
+}
+
+.chat-input {
+    background-color: #f2f2f2;
+    padding-top: 10px;
+    padding-left: 10px;
+    border-top: 3px solid #ccc;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid p-4">
+<div class="row" style="margin-bottom: 100px;">
+<div class="col">
+    <div class="card fixed-top" style="top: 80px">
+        <div class="row">
+            <div class="col-1 d-flex align-items-center justify-content-center">
+                <img class="img-fluid profile-icon" src="{{ interlocutor.person.profilePhoto.url }}">
+            </div>
+            <div class="col-10">
+                <div class="card-body">
+                    <h1 class="card-title">{{ interlocutor.username }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="row d-flex">
+    <div class="col" id="chat-box">
+    </div>
+    <p id="end" ></p>
+</div>
+<div class="row" style="margin-top: 50px;">
+    <div class="col">
+        <div class="card fixed-bottom text-center chat-input">
+            <form action="{% url 'chats:sendMessage' interlocutor.id %}" method="POST">
+                <div class="row">
+                    {% csrf_token %}
+                    <div class="col col-9">
+                        <input type="text" class="form-control" name="message" id="message" placeholder="Type your message here" autofocus>
+                    </div>
+                    <div class="col col-3">
+                        <input type="submit" value="Send" class="btn btn-success btn-block w-100">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    
+    firstTime = true;
+
+    function scollDown()
+    {
+        var end = document.getElementById('end');
+
+        
+        var container = document.getElementsByTagName('body')[0];
+        console.log(container);
+        console.log(container.scrollTop);
+        console.log(container.clientHeight);
+        console.log(container.scrollHeight);
+        if(firstTime)
+        {
+            firstTime = false;
+            end.scrollIntoView();
+        }
+        else if ( container.scrollHeight - (container.scrollTop + container.clientHeight) < 70) 
+        {
+            end.scrollIntoView();
+        }
+    }
+
+
+    function fetchMessages() {
+        $.ajax({
+            url: "{% url 'chats:fetchMessages' interlocutor.id %}",
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $('#chat-box').empty(); // Clear existing messages
+                if (data.length > 0) {
+                    data.forEach(function(message) {
+                        var messageContainerClass = message.sender == "{{ request.user }}" ? 'outgoing-chat-message-container' : 'incoming-chat-message-container';
+                        var messageHtml = '<div class="card chat-message-container ' + messageContainerClass + '">' +
+                            '<h4 class="card-text">' + message.message + '</h4>' +
+                            '<span>'  +  message.dateTime  +  '</span>'+
+                            '</div>';
+                        $('#chat-box').append(messageHtml); // Append new message
+                    });
+                    scollDown();
+                } else {
+                    $('#chat-box').append('<h3 class="text-center my-4">No messages</h3>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching messages:', error);
+            }
+        });
+    }
+
+    // Fetch messages initially and then set interval to fetch every 5 seconds
+    fetchMessages();
+    setInterval(fetchMessages, 2000); // Fetch messages every 5 seconds
+</script>
+{% endblock %}

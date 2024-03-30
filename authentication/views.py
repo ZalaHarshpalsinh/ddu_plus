@@ -18,7 +18,7 @@ def studentRegister(request):
             student.person = person
             student.save()
 
-            return redirect('landingPage')
+            return redirect('authentication:login')
     else:
         userForm = UserRegistrationForm()
         personForm = PersonInfoForm()
@@ -48,7 +48,7 @@ def employeeRegister(request):
             employee.person = person
             employee.save()
 
-            return redirect('landingPage')
+            return redirect('authentication:login')
     else:
         userForm = UserRegistrationForm()
         personForm = PersonInfoForm()
@@ -69,7 +69,7 @@ def loginView(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request ,user)
-                return redirect('landingPage')
+                return redirect('home')
     else:
         form = AuthenticationForm()
 

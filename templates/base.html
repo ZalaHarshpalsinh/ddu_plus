@@ -19,6 +19,10 @@
             border-radius: 50%;
             object-fit: cover;
         }
+        body
+        {
+            background-color: #1f0821;
+        }
     </style>
     {% block style %} {% endblock %}
 </head>
@@ -35,7 +39,7 @@
                 <ul class="navbar-nav">
                     {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="#" class="nav-link active">Home</a>
+                        <a href="{% url 'home' %}" class="nav-link active">Home</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">
@@ -57,9 +61,9 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="{% url 'profiles:userProfile' user.id %}" class="nav-link active">
-                            <img src="{{ user.person.profilePhoto.url }}" alt="Profile" class="profile-icon">
-                            {{ user.username }}
+                        <a href="{% url 'profiles:userProfile' request.user.id %}" class="nav-link active">
+                            <img src="{{ request.user.person.profilePhoto.url }}" alt="Profile" class="profile-icon">
+                            {{ request.user.username }}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -76,5 +80,6 @@
     </nav>
     {% block body %} {% endblock %}
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% block script %}{% endblock %}
 </html>

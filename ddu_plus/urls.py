@@ -23,8 +23,10 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.landingPage, name='landingPage' ),
+    path('home', views.home , name='home' ),
     path('authentication/', include('authentication.urls')),
     path('profiles/', include('profiles.urls')),
+    path('chats/', include('chats.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

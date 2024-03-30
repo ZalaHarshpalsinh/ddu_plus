@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 style="color: white;">Chats :</h2>
+            <ul class="list-group list-group-flush">
+                {% for interlocutor in interlocutors %}
+                    <a href="{% url 'chats:displayChat' interlocutor.id %}" class="list-group-item shadow my-2 rounded" style="background-color: rgb(19 115 255); color: white;">
+                        <div class="row">
+                            <div class="col-1">
+                                <img src="{{ interlocutor.person.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
+                            </div>
+                            <div class="col">
+                                <h3>  {{ interlocutor.username }}  </h3>
+                                <p class="card-subtitle"> {{ interlocutor.type }} </p>
+                            </div>
+                        </div>
+                    </a>
+                {% empty %}
+                    <p>No chats yet</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

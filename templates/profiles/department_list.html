@@ -8,13 +8,21 @@ Departments
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h2>Departments :</h2>
+            <h2 style="color: white;">Departments :</h2>
             <ul class="list-group list-group-flush">
                 {% for department in departments %}
-                    <a href="{% url 'profiles:departmentProfile' department.id %}" class="list-group-item">
-                            <img src="{{ department.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
-                            <span>{{ department.name }}</span>
+                    <a href="{% url 'profiles:departmentProfile' department.id %}" class="list-group-item shadow my-2 rounded" style="background-color:rgb(237 255 0);">
+                        <div class="row">
+                            <div class="col-1">
+                                <img src="{{ department.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
+                            </div>
+                            <div class="col">
+                                <h4>  {{ department.name }}  </h4>
+                            </div>
+                        </div>
                     </a>
+                {% empty %}
+                    <p>No departments created yet</p>
                 {% endfor %}
             </ul>
         </div>

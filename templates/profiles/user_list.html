@@ -8,12 +8,19 @@ Search
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h2>Users :</h2>
+            <h2 style="color: white;">Users :</h2>
             <ul class="list-group list-group-flush">
                 {% for user in users %}
-                    <a href="{% url 'profiles:userProfile' user.id %}" class="list-group-item">
-                            <img src="{{ user.person.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
-                            <span>{{ user.username }}</span>
+                    <a href="{% url 'profiles:userProfile' user.id %}" class="list-group-item my-2 rounded" style="background-color: aqua;">
+                        <div class="row">
+                            <div class="col-1">
+                                <img src="{{ user.person.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
+                            </div>
+                            <div class="col">
+                                <h3>  {{ user.username }}  </h3>
+                                <p class="card-subtitle"> {{ user.type }} </p>
+                            </div>
+                        </div>
                     </a>
                 {% empty %}
                     <p class="text-danger">No users found<p>

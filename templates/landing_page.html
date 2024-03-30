@@ -1,34 +1,62 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
     DDU+
 {% endblock%}
 
+{% block style %}
+
+<style>
+    .photo
+    {
+        height: 200px;
+    }
+    .card-body
+    {
+        height: 220px;
+    }
+</style>
+
+{% endblock %}
+
 {% block body %}
 
 
-<div class="container-fluid mt-5 p-4">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-12 col-md-6 border-end border-4 border-dark p-4">
-            <div class="card m-4 border-4 border-primary">
+        <div class="col-12 col-md-6 p-4">
+            <div class="card m-4 shadow">
+                <div class="card-header">
+                    <h2 class="card-title">Student</h2>
+                    <img class="card-img-top photo" src="{% static 'images/student.jpg' %}">
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Student</h5>
-                    <a href="{% url 'authentication:studentRegister' %}" class="btn btn-primary">Register</a>
+                    <p class="card-text">
+                        Dear students, welcome to our dynamic campus communication platform! Here, you can connect with classmates, share ideas, and stay updated on campus events. Create your personalized profile, join discussions, and make the most of your college experience. Don't miss out on the latest happenings – explore upcoming events and activities tailored just for you. Join us today and be part of the vibrant campus community!
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'authentication:studentRegister' %}" class="btn btn-primary w-100">Register</a>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-6 p-4">
-            <div class="card m-4 border-4 border-primary">
+            <div class="card m-4 shadow">
+                <div class="card-header">
+                    <h2 class="card-title">Employee</h2>
+                    <img class="card-img-top photo" src="{% static 'images/faculty.png' %}">
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Employee</h5>
-                    <a href="{% url 'authentication:employeeRegister' %}" class="btn btn-primary">Register</a>
+                    <p class="card-text">
+                        Dear faculty and employees, join our innovative campus communication platform designed to enhance collaboration and streamline communication within our college community. Connect with colleagues, share resources, and stay informed about important updates and events. Utilize your personalized profile to network with fellow faculty members and contribute to a dynamic academic environment. Discover upcoming campus events and initiatives geared towards faculty engagement and professional development. Join us to foster connections and make a positive impact on campus!
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'authentication:employeeRegister' %}" class="btn btn-primary w-100">Register</a>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row mt-1">
-        <div class="col-12">
-            <a href="{% url 'authentication:login' %}" class="btn w-100 btn-primary">Login</a>
         </div>
     </div>
 </div>

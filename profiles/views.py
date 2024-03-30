@@ -1,5 +1,6 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from authentication.models import *
+from .forms import *
 from django.db.models import Q
 
 # Create your views here.
@@ -18,12 +19,36 @@ def userProfile(request, user_id):
 
     if user.type == 'STUDENT':
         template = 'profiles/student_profile.html'
+        extra = StudentInfoForm(instance=request.user.person.student)
     else :
         template = 'profiles/employee_profile.html'
+        extra = EmployeeInfoForm(instance=request.user.person.employee)
 
     return render(request, template, {
         'user' : user,
+        'update_form' : {
+            'user': UserUpdateForm(instance=request.user),
+            'person': PersonInfoForm(instance=request.user.person),
+            'extra': extra,
+        },
     })
+
+
+def userUpdate(request):
+    if request.method == "POST":
+        userForm = UserUpdateForm(request.POST, instance=request.user)
+        personForm = PersonInfoForm(request.POST, request.FILES, instance=request.user.person )
+        if request.user.type == request.user.userTypes.STUDENT:
+            additionalForm = StudentInfoForm(request.POST, instance=request.user.person.student)
+        else:
+            additionalForm = EmployeeInfoForm(request.POST, instance=request.user.person.employee)
+
+        if userForm.is_valid() and personForm.is_valid() and additionalForm.is_valid() :
+            userForm.save()
+            personForm.save()
+            additionalForm.save()
+            return redirect('profiles:userProfile',request.user.id)
+
 
 def departments(request):
     departments = Department.objects.all()

@@ -1,0 +1,57 @@
+{% extends 'profiles/profile.html' %}
+
+{% block title %}
+    {{ club.name }}
+{% endblock %}
+
+
+{% block modals %}
+{% if isAdmin %}
+<div id='updateModal' class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update profile</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'profiles:clubUpdate' club.id %}" method="POST" id="updateForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ form }}  
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"> Update </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block profileImage %}
+    <img src="{{ club.profilePhoto.url }}" alt="Profile Photo" class="profile-photo my-4">
+{% endblock %}
+
+{% block imageInfo %}
+    <h1>{{ club.name }}</h1>
+{% endblock %}
+
+{% block profileInfo %}
+    <h2>Information</h2>
+    <div class="row my-4 g-4">
+        <div class="form-group col-12">
+            <label for="about">About : </label>
+            <div class="form-control" id="about"> {{ club.about }} </div>
+        </div>
+    </div>
+    <div class="row">
+    {% if isAdmin %}
+        <div class="col-1">
+                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}

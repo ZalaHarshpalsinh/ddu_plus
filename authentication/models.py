@@ -1,17 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from events.models import *
-
     
 # Create your models here.
-
-class Department(models.Model):
-    profilePhoto = models.ImageField(upload_to='profile_photos/Departments')
-    name = models.CharField(max_length=100)
-    about = models.TextField(max_length=5000)
-
-    def __str__(self):
-        return self.name
 
 class User(AbstractUser):
     class userTypes(models.TextChoices):
@@ -19,6 +9,15 @@ class User(AbstractUser):
         EMPLOYEE = 'EMPLOYEE', 'employee'
     type = models.CharField(max_length=8, choices=userTypes.choices, default=userTypes.STUDENT)
 
+class Department(models.Model):
+    profilePhoto = models.ImageField(upload_to='profile_photos/Departments')
+    name = models.CharField(max_length=100)
+    about = models.TextField(max_length=5000)
+    admins = models.ManyToManyField(User)
+    def __str__(self):
+        return self.name
+
+        
 class Person(models.Model):
     profilePhoto = models.ImageField(upload_to='profile_photos/People')
     department = models.ForeignKey(Department,on_delete=models.CASCADE)
@@ -26,6 +25,7 @@ class Person(models.Model):
 
     def __str__(self):
         return self.account.username
+
 
 
 class Student(models.Model):

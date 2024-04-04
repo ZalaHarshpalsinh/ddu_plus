@@ -67,7 +67,7 @@
                         <input type="text" class="form-control" name="message" id="message" placeholder="Type your message here" autofocus>
                     </div>
                     <div class="col col-3">
-                        <input type="submit" value="Send" class="btn btn-success btn-block w-100">
+                        <input type="submit" value="send" class="btn btn-success btn-block w-100">
                     </div>
                 </div>
             </form>
@@ -80,13 +80,13 @@
 {% block script %}
 <script>
     
+    fetchMessages();
     firstTime = true;
 
     function scollDown()
     {
         var end = document.getElementById('end');
 
-        
         var container = document.getElementsByTagName('body')[0];
         console.log(container);
         console.log(container.scrollTop);
@@ -97,7 +97,7 @@
             firstTime = false;
             end.scrollIntoView();
         }
-        else if ( container.scrollHeight - (container.scrollTop + container.clientHeight) < 70) 
+        else if ( container.scrollHeight - (container.scrollTop + container.clientHeight) < 100) 
         {
             end.scrollIntoView();
         }
@@ -132,7 +132,6 @@
     }
 
     // Fetch messages initially and then set interval to fetch every 5 seconds
-    fetchMessages();
     setInterval(fetchMessages, 2000); // Fetch messages every 5 seconds
 </script>
 {% endblock %}

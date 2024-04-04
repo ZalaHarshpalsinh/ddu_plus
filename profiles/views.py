@@ -49,6 +49,9 @@ def userUpdate(request):
             additionalForm.save()
             return redirect('profiles:userProfile',request.user.id)
 
+def userDelete(request):
+    request.user.delete()
+    return redirect('landingPage')
 
 def departments(request):
     departments = Department.objects.all()
@@ -57,12 +60,28 @@ def departments(request):
         'departments' : departments,
     })
 
+
 def departmentProfile(request, department_id):
     department = get_object_or_404(Department, pk=department_id)
 
-    return render(request, 'profiles/entity_profile.html', {
-        'entity' : department,
+    isAdmin = False
+    if request.user in department.admins.all():
+        isAdmin = True
+    
+    form = DepartmentUpdateForm(instance=department)
+    return render(request, 'profiles/department_profile.html', {
+        'department' : department,
+        'form': form,
+        'isAdmin': isAdmin,
     })
+
+def departmentUpdate(request, department_id):
+    if request.method == "POST":
+        department = Department.objects.get(id=department_id)
+        form = DepartmentUpdateForm(request.POST, request.FILES, instance=department)
+        if form.is_valid():
+            form.save()
+            return redirect('profiles:departmentProfile', department_id)
 
 def clubs(request):
     clubs = Club.objects.all()
@@ -74,8 +93,22 @@ def clubs(request):
 def clubProfile(request, club_id):
     club = get_object_or_404(Club, pk=club_id)
 
-    return render(request, 'profiles/entity_profile.html', {
-        'entity' : club,
+    isAdmin = False
+    if request.user in club.admins.all():
+        isAdmin = True
+
+    form = ClubUpdateForm(instance=club)
+    return render(request, 'profiles/club_profile.html', {
+        'club' : club,
+        'form':form,
+        'isAdmin':isAdmin,
     })
 
+def clubUpdate(request, club_id):
+    if request.method == "POST":
+        club = Club.objects.get(id=club_id)
+        form = ClubUpdateForm(request.POST, request.FILES, instance=club)
+        if form.is_valid():
+            form.save()
+            return redirect('profiles:clubProfile', club_id)
     

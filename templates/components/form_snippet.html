@@ -50,7 +50,7 @@
             is-valid
         {% endif %}"
 
-        id="{{field.id_for_label}}" name="{{field.name}}" placeholder="{{ field.help_text }}">{% if field.data %}{{field.data}}{% endif %}</textarea>
+        id="{{field.id_for_label}}" name="{{field.name}}" placeholder="{{ field.help_text }}">{% if field.value %}{{field.value}}{% endif %}</textarea>
     {% endif %}
 
     {% if not field.errors %}

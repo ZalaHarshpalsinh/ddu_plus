@@ -38,10 +38,6 @@ User | {{ user.username }}
 {% block imageInfo %}
     <h1>{{ user.username }}</h1>
     <p>{{ user.type }}</p>
-
-    {% if request.user == user %}
-        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
-    {% endif %}
     <a class="btn btn-success" href="{% url 'chats:displayChat' user.id %}">Message</a>
 {% endblock %}
 
@@ -68,14 +64,14 @@ User | {{ user.username }}
     </div>
     {% block extraInfo %} {% endblock %}
 </div>
-<!-- <div class="row">
+<div class="row">
+    {% if request.user == user %}
     <div class="col-1">
-        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal">
-            Update
-        </button>
+            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
     </div>
-    <div class="col-1">
-        <a class="btn btn-success" href="{% url 'chats:displayChat' user.id %}">Message</a>
+    <div class="col-3 ms-4">
+        <a class="btn btn-danger" href="{% url 'profiles:userDelete' %}" onclick="alert('Are you sure you want to delete your account?')"> Delete Account </a>
     </div>
-</div> -->
+    {% endif %}
+</div>
 {% endblock %}

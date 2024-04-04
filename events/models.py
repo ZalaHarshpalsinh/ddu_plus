@@ -6,7 +6,7 @@ class Club(models.Model):
     profilePhoto = models.ImageField(upload_to='profile_photos/Clubs')
     name = models.CharField(max_length=100)
     about = models.TextField(max_length=5000)
-
+    admins = models.ManyToManyField(User)
     def __str__(self):
         return self.name
 

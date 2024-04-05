@@ -20,9 +20,12 @@ def userProfile(request, user_id):
 
     if user.type == 'STUDENT':
         template = 'profiles/student_profile.html'
+    else:
+        template = 'profiles/employee_profile.html'
+
+    if request.user.type == 'STUDENT':
         extra = StudentInfoForm(instance=request.user.person.student)
     else :
-        template = 'profiles/employee_profile.html'
         extra = EmployeeInfoForm(instance=request.user.person.employee)
 
     return render(request, template, {

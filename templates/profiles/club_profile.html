@@ -58,9 +58,11 @@
 
 {% block imageInfo %}
     <h1>{{ club.name }}</h1>
+    {% if isAdmin %}
     <div class="mt-4">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal"> Post an Event </button>
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block profileInfo %}

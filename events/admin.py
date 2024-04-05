@@ -5,5 +5,8 @@ from .models import *
 class ClubAdmin(admin.ModelAdmin):
     filter_horizontal = ['admins']
 
+class EventAdmin(admin.ModelAdmin):
+    filter_horizontal = ['participants']
+
 admin.site.register(Club, ClubAdmin)
-admin.site.register(Event)
+admin.site.register(Event, EventAdmin)

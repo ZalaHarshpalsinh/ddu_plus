@@ -71,15 +71,20 @@ def viewEvent(request, event_id):
             data = [type, count]
             userTypeData += [data]
 
-    return render(request, 'events/view_event.html', {
-        'event': event,
-        'updateForm': updateForm,
-        'isAdmin': isAdmin,
-        'participants': participants,
-        'departmentData' : departmentData,
-        'semesterData': semesterData,
-        'userTypeData':userTypeData,
-    })
+        return render(request, 'events/view_event.html', {
+            'event': event,
+            'isAdmin': isAdmin,
+            'updateForm': updateForm,
+            'participants': participants,
+            'departmentData' : departmentData,
+            'semesterData': semesterData,
+            'userTypeData':userTypeData,
+        })
+    else:
+       return render(request, 'events/view_event.html', {
+            'event': event,
+            'isAdmin': isAdmin,
+        })
 
 
 def registerAtEvent(request, event_id):

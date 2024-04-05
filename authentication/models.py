@@ -40,10 +40,10 @@ class Student(models.Model):
 
 class Employee(models.Model):
     designation = models.CharField(max_length=50)
-    account = models.OneToOneField(User, on_delete=models.CASCADE)
+    person = models.OneToOneField(Person, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.account.username
+         return self.person.account.username
 
 
 

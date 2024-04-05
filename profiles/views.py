@@ -1,7 +1,8 @@
 from django.shortcuts import render,get_object_or_404,redirect
+from django.db.models import Q
 from authentication.models import *
 from .forms import *
-from django.db.models import Q
+from events.forms import *
 
 # Create your views here.
 
@@ -97,10 +98,12 @@ def clubProfile(request, club_id):
     if request.user in club.admins.all():
         isAdmin = True
 
-    form = ClubUpdateForm(instance=club)
+    profile_form = ClubUpdateForm(instance=club)
+    event_form = EventCreationForm()
     return render(request, 'profiles/club_profile.html', {
         'club' : club,
-        'form':form,
+        'profile_form': profile_form,
+        'event_form': event_form,
         'isAdmin':isAdmin,
     })
 

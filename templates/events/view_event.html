@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ event.name }}
+{% endblock %}
+
+{% block body %}
+
+{% if isAdmin %}
+<div id='updateModal' class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Event Info</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'events:updateEvent' event.id %}" method="POST" id="updateForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ updateForm }}  
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"> Update </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id='deleteModal' class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Event Info</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'events:deleteEvent' event.id %}" method="POST" id="deleteForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    Are you sure you want to delete this event?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger"> Delete </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <ul class="nav nav-tabs justify-content-center m-4">
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#event">Event Info</button>
+                </li>
+                {% if isAdmin %}
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#participants">Participants</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#charts">Charts</button>
+                </li>
+                {% endif %}
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="event">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="card mb-3 shadow-lg bg-light" >
+                                    <div class="row g-0">
+                                        <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                            <img src="{{ event.poster.url }}" class="img-fluid">
+                                        </div>
+                                        <div class="col-md-8" style="background-color:rgb(163, 239, 239);">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{event.name}}</h5>
+                                                <p class="card-text">Event by :  <a href="{% url 'profiles:clubProfile' event.club.id %}">{{event.club.name}}</a></p>
+                                                <p class="card-text">Date: {{event.dateTime}}</p>
+                                                <p class="card-text">Venue: {{event.venue}}</p>
+                                                {% if isAdmin %}
+                                                    <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal" >Update</a>
+                                                    <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" >Delete</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="card-footer p-0">
+                                            <a class="btn btn-success w-100" href="{% url 'events:registerAtEvent' event.id %}"> Register </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if isAdmin %}
+                <div class="tab-pane fade" id="participants">
+                    <div class="container" style="color: white;">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 > Participants: </h2>
+                                <ul class="list-group list-group-flush">
+                                    {% for participant in participants %}
+                                        <a href="{% url 'profiles:userProfile' participant.id %}" class="list-group-item shadow my-2 rounded" style="background-color: rgb(19 115 255); color: white;">
+                                            <div class="row">
+                                                <div class="col-1">
+                                                    <img src="{{ participant.person.profilePhoto.url }}" alt="Profile Photo" class="profile-icon">
+                                                </div>
+                                                <div class="col-11">
+                                                    <h3>  {{ participant.username }}  </h3>
+                                                    <p class="card-subtitle"> {{ participant.type }} </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    {% empty %}
+                                        <p>No participants yet</p>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="charts" style="color: white;">
+                    {% if participants %}
+                    <div class="container d-flex justify-content-center" >
+                        <div class="row">
+                            <div class="col-12">
+                                <h1>Department wise participation :</h1>
+                                <div class="m-5" id="departmentChart"></div>
+                                <h1>Semester wise participation :</h1>
+                                <div class="m-5" id="semesterChart"></div>
+                                <h1>User type wise participation :</h1>
+                                <div class="m-5" id="userTypeChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                        <h2 class="text-center">No participants yet</h2>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+    
+    var data = "{{ departmentData | safe }}";
+    data = data.replace(/'/g, '"');
+    data = JSON.parse(data);
+    data = google.visualization.arrayToDataTable(data);
+
+    var options = {
+        is3D: true,
+        backgroundColor: {
+            stroke:'#fcba03',
+            strokeWidth:'10',
+            fill: '#d9f57f',
+        },
+        chartArea: { width: '90%', height: '90%' },
+        height: 400,
+        width: 800,
+        fontSize: 20,
+        legend: { textStyle: { color: '#333', fontSize: 20 } }
+    };
+    var chart = new google.visualization.PieChart(document.getElementById('departmentChart'));
+    chart.draw(data, options);
+
+
+    data = "{{ semesterData | safe }}";
+    console.log(data);
+    data = data.replace(/'/g, '"');
+    console.log(data);
+    data = JSON.parse(data);
+    console.log(data);
+    data = google.visualization.arrayToDataTable(data);
+
+    chart = new google.visualization.PieChart(document.getElementById('semesterChart'));
+    chart.draw(data, options);
+
+    data = "{{ userTypeData | safe }}";
+    console.log(data);
+    data = data.replace(/'/g, '"');
+    console.log(data);
+    data = JSON.parse(data);
+    console.log(data);
+    data = google.visualization.arrayToDataTable(data);
+
+    chart = new google.visualization.PieChart(document.getElementById('userTypeChart'));
+    chart.draw(data, options);
+    }
+</script>
+{% endblock %}

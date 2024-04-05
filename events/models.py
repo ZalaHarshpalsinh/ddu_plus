@@ -17,3 +17,6 @@ class Event(models.Model):
     dateTime = models.DateTimeField()
     venue = models.TextField(max_length=500)
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    participants = models.ManyToManyField(User)
+    def __str__(self):
+        return self.name

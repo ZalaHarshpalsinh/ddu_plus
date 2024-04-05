@@ -27,7 +27,13 @@
                 {% endfor %}
             </select>
         {% else %}
-            <input type="{{ field.field.widget.input_type }}" class="form-control
+            <input 
+            {% if field.name == "dateTime" %}
+                type="datetime-local"
+            {% else %}
+                type="{{ field.field.widget.input_type }}"
+            {% endif %}
+            class="form-control
             {% if field.errors %}
             is-invalid
             {% elif form.is_bound and field.field.widget.input_type != 'password' %}

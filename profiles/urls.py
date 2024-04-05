@@ -13,5 +13,5 @@ urlpatterns = [
     path('departments/<department_id>/update', views.departmentUpdate, name='departmentUpdate'),
     path('clubs/', views.clubs, name='clubs'),
     path('clubs/<club_id>', views.clubProfile, name='clubProfile'),
-    path('clubts/<club_id>/update', views.clubUpdate, name='clubUpdate'),
+    path('clubs/<club_id>/update', views.clubUpdate, name='clubUpdate'),
 ]

@@ -17,7 +17,7 @@
             <form action="{% url 'profiles:clubUpdate' club.id %}" method="POST" id="updateForm" enctype="multipart/form-data">
                 <div class="modal-body">
                     {% csrf_token %}
-                    {{ form }}  
+                    {{ profile_form }}  
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary"> Update </button>
@@ -27,6 +27,27 @@
         </div>
     </div>
 </div>
+<div id='eventModal' class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Post a Event</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'events:postEvent' club.id %}" method="POST" id="eventForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ event_form }}  
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"> Post </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endif %}
 {% endblock %}
 
@@ -37,6 +58,9 @@
 
 {% block imageInfo %}
     <h1>{{ club.name }}</h1>
+    <div class="mt-4">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal"> Post an Event </button>
+    </div>
 {% endblock %}
 
 {% block profileInfo %}
@@ -50,7 +74,7 @@
     <div class="row">
     {% if isAdmin %}
         <div class="col-1">
-                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
         </div>
     {% endif %}
     </div>
